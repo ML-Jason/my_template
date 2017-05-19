@@ -35,12 +35,13 @@ app.all('/', (req, res) => {
   res.redirect('/repos');
 });
 app.get('/*', (req, res) => {
+  // res.render('./main.pug');
   res.render('./main');
 });
 
 app.listen(PORT, 'localhost', (err) => {
   if (err) {
-    console.log(err);
+    // console.log(err);
   }
-  console.log(`Listening at http://localhost:${PORT}`);
+  // console.log(`Listening at http://localhost:${PORT}`);
 });

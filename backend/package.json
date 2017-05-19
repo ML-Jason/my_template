@@ -1,9 +1,11 @@
 {
-  "name": "github_manager_backend",
+  "name": "client",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
+    "d": "gulp d",
+    "p": "gulp p",
     "dev": "cross-env NODE_ENV=production webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "test": "mocha test/test.js",
@@ -18,7 +20,8 @@
     "vuex": "^2.3.1",
     "webpack": "^2.4.1",
     "webpack-dev-middleware": "^1.10.1",
-    "webpack-hot-middleware": "^2.18.0"
+    "webpack-hot-middleware": "^2.18.0",
+    "es6-promise": "^4.1.0"
   },
   "devDependencies": {
     "async": "^2.1.5",

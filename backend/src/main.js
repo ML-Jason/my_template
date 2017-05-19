@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Vue from 'vue';
 

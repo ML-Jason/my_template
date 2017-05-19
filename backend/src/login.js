@@ -1,3 +1,4 @@
+import 'es6-promise/auto';
 import * as config from './config/config';
 
 function getmetaContent() {
