@@ -4,8 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "d": "gulp d",
-    "p": "gulp p",
     "dev": "cross-env NODE_ENV=production webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "test": "mocha test/test.js",
