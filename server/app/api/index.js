@@ -22,9 +22,24 @@ module.exports = () => {
           .fill('black')
           .drawText(10, 36, '中文TEST!!', 'NorthWest')
           .write('./server/public/image/out.jpg', (err2) => {
-            global.logger.log('error', err2);
+            if (err2) {
+              global.logger.log('error', err2);
+            }
             res.send('/image/out.jpg');
           });
+      });
+  });
+
+  router.get('/gif', (req, res) => {
+    gm('./server/public/image/s01.jpg')
+      .in('-delay', '90')
+      .in('-loop', '90')
+      .in('./server/public/image/p*.jpg')
+      .write('./server/public/image/out.gif', (err2) => {
+        if (err2) {
+          global.logger.log('error', err2);
+        }
+        res.send('/image/out.gif');
       });
   });
   return router;
