@@ -20,6 +20,7 @@
     "crypto": "0.0.3",
     "express": "^4.14.0",
     "express-useragent": "^1.0.7",
+    "gm": "^1.23.0",
     "helmet": "^3.6.0",
     "iconv-lite": "^0.4.16",
     "jsonwebtoken": "^7.3.0",
