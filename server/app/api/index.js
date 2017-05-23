@@ -10,13 +10,21 @@ module.exports = () => {
 
   router.get('/gm', (req, res) => {
     gm()
+      .command('composite')
       .in('-page', '+0+0')
-      .in('../../public/image/FB_share_1200x630.jpg')
-      .in('-page', '+500+200')
-      .in('../../public/image/caption.png')
-      .drawText(100, 100, '這是測試')
-      .write('../../public/image/out.jpg', () => {
-        res.send('/image/out.jpg');
+      .in('./server/public/image/caption.png')
+      .in('-page', '+0+0')
+      .in('./server/public/image/FB_share_1200x630.jpg')
+      .toBuffer('PNG', (err, buffer) => {
+        gm(buffer)
+          .font('./server/public/fonts/msjh.ttf')
+          .fontSize(36)
+          .fill('black')
+          .drawText(10, 36, '中文TEST!!', 'NorthWest')
+          .write('./server/public/image/out.jpg', (err2) => {
+            global.logger.log('error', err2);
+            res.send('/image/out.jpg');
+          });
       });
   });
   return router;

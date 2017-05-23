@@ -12,7 +12,7 @@ function http404(req, res) {
 }
 
 module.exports = (app) => {
-  app.use('/api', require('./api'));
+  app.use('/api', require('./api')());
   app.all('/', (req, res) => {
     res.send('index');
   });
