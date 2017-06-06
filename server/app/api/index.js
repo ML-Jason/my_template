@@ -1,7 +1,6 @@
 const express = require('express');
 const middles = require('../middles.js');
 const RateLimit = require('../lib/ratelimit.js');
-const gm = require('gm');
 
 module.exports = () => {
   const router = express.Router();
