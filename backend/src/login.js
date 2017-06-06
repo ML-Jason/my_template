@@ -1,4 +1,5 @@
 import 'es6-promise/auto';
+import Vue from 'vue';
 import * as config from './config/config';
 
 window.swal.setDefaults({ allowOutsideClick: false });
@@ -35,7 +36,7 @@ const app = new Vue({
         },
         method: 'POST',
         datatype: 'jsonp',
-        /*headers: {
+        /* headers: {
           Authorization: 'Basic',
         },*/
       }).done((d) => {
@@ -58,7 +59,7 @@ const app = new Vue({
     reloadCodeImg() {
       const imgurl = `${config.AjaxUrl}/api/captcha?size=150x40&num=4&color=0`;
       const codekey = `rand${Math.floor(Math.random() * 10000)}`;
-      this.codeimg = `${config}&key=${codekey}`;
+      this.codeimg = `${imgurl}&key=${codekey}`;
     },
   },
   created() {

@@ -49,7 +49,7 @@ const cssfiles = [
   'https://cdn.jsdelivr.net/sweetalert2/6.3.1/sweetalert2.min.css',
   // Bootstrap daterangepicker
   'https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css',
- 
+
   './src/static/css/custom.css',
   './src/static/css/jason.css',
 ];
@@ -75,7 +75,7 @@ gulp.task('js', () => {
     return gulp.src('./src/static/tmp/*.js')
         .pipe(uglify({ preserveComments: 'license' }))
         .pipe(gulp.dest('./dist/js'))
-        .pipe(gulp.dest('../server/public/js'));
+        .pipe(gulp.dest('../server/public/mlmng/js'));
   });
 });
 gulp.task('css', () => {
@@ -100,14 +100,14 @@ gulp.task('css', () => {
     return gulp.src('./src/static/tmp/*.css')
       .pipe(cleanCSS({ compatibility: 'ie8' }))
       .pipe(gulp.dest('./dist/css'))
-      .pipe(gulp.dest('../server/public/css'));
+      .pipe(gulp.dest('../server/public/mlmng/css'));
   });
 });
 gulp.task('default', ['js', 'css']);
 
 gulp.task('p', () => {
   gulp.src('./dist/**/*.*')
-    .pipe(gulp.dest('../server/public'));
+    .pipe(gulp.dest('../server/public/mlmng/'));
 });
 
 gulp.task('stylus', parseStylus);

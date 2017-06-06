@@ -29,7 +29,7 @@ const app = new Vue({
     loginState(val) {
       if (!val) {
         Cookies.remove('t');
-        window.location.href = '/login';
+        window.location.href = '/mlmng/login';
       }
     },
   },
@@ -50,7 +50,7 @@ const app = new Vue({
         // this.setCoverloading(false);
       });
     } else {
-      window.location.href = '/login';
+      window.location.href = '/mlmng/login';
     }
   },
   mounted() {

@@ -36,7 +36,7 @@ app.set('views', './');
 app.use(express.static('./server/public'));
 
 // Connect DB
-// model.createConnect();
+model.createConnect();
 
 require('./server/app')(app);
 

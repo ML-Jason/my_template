@@ -25,18 +25,18 @@ app.use(express.static('../server/public'));
 app.set('view engine', 'pug');
 app.set('views', '../server/public');
 
-app.get('/login', (req, res) => {
-  res.render('./login', { params: { githubclientid: global.config.GITHUB_APP_ID } });
+app.get('/mlmng/login', (req, res) => {
+  res.render('./mlmng/login', { params: { githubclientid: global.config.GITHUB_APP_ID } });
 });
 app.get('/callback', (req, res) => {
   res.render('./callback');
 });
-app.all('/', (req, res) => {
-  res.redirect('/repos');
+app.all('/mlmng', (req, res) => {
+  res.redirect('/mlmng/repos');
 });
-app.get('/*', (req, res) => {
+app.get('/mlmng/*', (req, res) => {
   // res.render('./main.pug');
-  res.render('./main');
+  res.render('./mlmng/main');
 });
 
 app.listen(PORT, 'localhost', (err) => {
