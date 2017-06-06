@@ -23,7 +23,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use(express.static('./dist'));
 app.use(express.static('../server/public'));
 app.set('view engine', 'pug');
-app.set('views', '../server/public/mlmng');
+app.set('views', '../server/public');
 
 app.get('/mlmng/login', (req, res) => {
   res.render('./mlmng/login', { params: { githubclientid: global.config.GITHUB_APP_ID } });
