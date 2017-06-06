@@ -23,19 +23,15 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use(express.static('./dist'));
 app.use(express.static('../server/public'));
 app.set('view engine', 'pug');
-app.set('views', '../server/public');
+app.set('views', '../server/public/mlmng');
 
-app.get('/login', (req, res) => {
-  res.render('./login', { params: { githubclientid: global.config.GITHUB_APP_ID } });
+app.get('/mlmng/login', (req, res) => {
+  res.render('./login');
 });
-app.get('/callback', (req, res) => {
-  res.render('./callback');
-});
-app.all('/', (req, res) => {
-  res.redirect('/repos');
-});
-app.get('/*', (req, res) => {
-  // res.render('./main.pug');
+// app.all('/mlmng', (req, res) => {
+//   res.redirect('/mlmng');
+// });
+app.get('/mlmng/*', (req, res) => {
   res.render('./main');
 });
 

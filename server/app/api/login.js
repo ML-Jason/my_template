@@ -1,9 +1,10 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const svgCaptcha = require('svg-captcha');
-const User = require('../model/model.js')('temp_user', 'user');
-const Captcha = require('../model/model.js')('temp_captcha', 'captcha');
+const User = require('../model/model.js')('mlmngusers', 'user');
+const Captcha = require('../model/model.js')('captchas', 'captcha');
 const validators = require('../lib/validators.js');
+const middles = require('../middles.js');
 
 module.exports = (router) => {
   /**
@@ -147,7 +148,8 @@ module.exports = (router) => {
    *
    * @apiSampleRequest /auth/api/verifylogin
    */
-  router.get('/verifylogin', (req, res, next) => {
+  router.get('/verifylogin', middles.verifyToken, (req, res, next) => {
+    console.log(res.locals._payload);
     if (res.locals._payload) {
       if (res.locals._payload.tp === 'secret') {
         // 不是client端的token
@@ -260,23 +262,3 @@ module.exports = (router) => {
   });
 };
 
-// 如果DB裡沒有帳號的話(一開始 or 不小心被砍)，新增一個admin
-function checkUserNumber() {
-  User.findOne({ role: 'admin', active: 'active' }).exec((err, d) => {
-    if (err) global.logger.log('error', err);
-    if (!d) {
-      global.logger.log('warn', '沒有管理者帳號，新增一個');
-      const md5 = crypto.createHash('md5');
-      const newuser = new User({
-        username: 'admin',
-        userpwd: md5.update('medialand').digest('hex'),
-        role: 'admin',
-        active: 'active',
-      });
-      newuser.save((err2) => {
-        if (err2) global.logger.log('error', err2);
-      });
-    }
-  });
-}
-checkUserNumber();

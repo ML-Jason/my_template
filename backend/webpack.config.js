@@ -6,16 +6,15 @@ const webpack = require('webpack');
 const config = {
   entry: {
     'main.js': './src/main.js',
-    'callback.js': './src/callback.js',
     'login.js': './src/login.js',
   },
   output: {
     // 發佈的路徑
     // path: path.resolve(__dirname, './dist/auth/js'),
-    path: path.resolve(__dirname, '../server/public/js'),
+    path: path.resolve(__dirname, '../server/public/mlmng/js'),
     filename: '[name]',
     // 異步載入的路徑(以web為主的路徑)
-    publicPath: '/js/',
+    publicPath: '/mlmng/js/',
     // 異步載入的檔案名
     chunkFilename: '[id].build.js?[chunkhash]',
   },

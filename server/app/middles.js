@@ -1,6 +1,6 @@
 const errCodes = require('./errorCodes.js');
 const jwt = require('jsonwebtoken');
-const User = require('./model/model.js')('mlgithub_user', 'user');
+const User = require('./model/model.js')('mlmngusers', 'user');
 
 const middles = {};
 
@@ -13,43 +13,6 @@ middles.allowAll = (req, res, next) => {
   }
   next();
 };
-
-// // 確定api call來源是在whitelist裡
-// middles.allowAccess = (req, res, next) => {
-//   const host = req.get('host');
-//   const referer = req.get('referer');
-//   let rurl = ''; // 來源網址
-//   if (referer) rurl = referer.replace('http://', '').replace('https://', '').split('/')[0];
-//   // 先允許Methods及Headers的種類
-//   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Authorization');
-
-//   if (rurl !== '') {
-//     if (rurl === host) {
-//       // 從自己的網站發出的，無需驗證
-//       next();
-//     } else {
-//       const allowOrigin = `${req.protocol}://${rurl}`;
-//       if (!req._token) {
-//         // 如果req._token不存在的話，就對網址進行驗證，是否已經在whitelist裡
-//         if (global.ALLOW_DOMAIN.indexOf(allowOrigin) >= 0) {
-//           res.header('Access-Control-Allow-Origin', allowOrigin);
-//           next();
-//         } else {
-//           next(errCodes.get('E001001'));
-//         }
-//       } else {
-//         // 如果req._token有值的話，表示是第二次請求，直接allow
-//         res.header('Access-Control-Allow-Origin', allowOrigin);
-//         next();
-//       }
-//     }
-//   } else {
-//     // 從本機端或是另一台server發出
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-//   }
-// };
 
 // 解析token
 middles.parseToken = (req, res, next) => {
@@ -85,20 +48,17 @@ middles.verifyToken = (req, res, next) => {
   if (res.locals._err) {
     next(res.locals._err);
   } else {
-    User.findOne({ email: res.locals._payload.email, token: res.locals._token }, '_id email login role active avatar_url gittoken', (err, d) => {
+    User.findOne({ _id: res.locals._payload.i, token: res.locals._token }, '_id username role active', (err, d) => {
       if (err) return next(err);
       if (d) {
         // 帳號被停止
-        if (d.active !== 1) return next('E002006');
+        if (d.active === 'stop') return next('E002006');
         res.locals._user = {
-          _id: d._id,
-          email: d.email,
-          login: d.login,
-          role: d.role,
-          active: d.active,
-          avatar_url: d.avatar_url,
+          userid: d._id,
+          username: d.username,
+          role: d.role || '',
+          token: res.locals._token,
           exp: res.locals._payload.exp,
-          gittoken: d.gittoken,
         };
         return next();
       }

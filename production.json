@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "template:8080",
+      "name": "pizzahut:8080",
       "script": "index.js",
       "watch": ["server","index.js"],
       //"exec_mode": "cluster",

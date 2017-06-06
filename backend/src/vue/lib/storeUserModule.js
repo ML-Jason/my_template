@@ -102,7 +102,7 @@ const userModule = {
     },
     getuserinfo({ rootState }, param) {
       return new Promise((resolve) => {
-        if (!rootState.user.token) return resolve();
+        if (!rootState.token) return resolve();
         let rs = { status: 'ERROR' };
         return $.ajax({
           url: `${config.AjaxUrl}/api/user/${param}`,

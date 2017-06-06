@@ -36,17 +36,17 @@ app.set('views', './');
 app.use(express.static('./server/public'));
 
 // Connect DB
-// model.createConnect();
+model.createConnect();
 
 require('./server/app')(app);
-
-// 使用socket.io
-// require("./socket.js")(server);
 
 // 啟動server
 const server = app.listen(port, '127.0.0.1', () => {
   global.logger.info(`Listening on port ${port}`);
 });
+
+// 使用socket.io
+require('./server/socketio/socket.js')(server);
 
 // 程式發生exception時的例外處理
 require('./server/exceptionHandler.js')(server, app);

@@ -1,5 +1,12 @@
 <template lang="pug">
   div
+    //
+      .page-title
+        .title_left
+          h3
+            |{{title}}
+            small {{subtitle}}
+      .clearfix
     .row
       .col-md-12
         .x_panel
@@ -11,18 +18,42 @@
               .form-group
                 label.control-label.col-sm-3.col-xs-12
                   | Username
-                .col-sm-6.col-xs-12
-                  input.form-control.col-md-7.col-xs-12(type="text" v-model.trim="login" @keyup.enter="onSubmit")
-                  small
-                    |使用者在GitHub上顯示的名稱(不確定可先不填)，因為加入協作者是以此為依據，若不確定請勿修改
-              .form-group
-                label.control-label.col-sm-3.col-xs-12
-                  | Email
                   span.required *
                 .col-sm-6.col-xs-12
-                  input.form-control.col-md-7.col-xs-12(type="text" v-model.trim="email" @keyup.enter="onSubmit")
+                  input.form-control.col-md-7.col-xs-12(type="text" v-model.trim="uname" @keyup.enter="onSubmit")
                   small
-                    |使用者Email，需要是米蘭的Email
+                    |使用者帳號(長度5-50，英文與數字組合，可使用@、.以及_)
+              .form-group
+                label.control-label.col-sm-3.col-xs-12
+                  | Password
+                  span.required *
+                .col-sm-6.col-xs-12
+                  input.form-control.col-md-7.col-xs-12(type="password" v-model.trim="upwd" @keyup.enter="onSubmit")
+                  small
+                    |使用者密碼(長度5-20，英文與數字組合，可使用@、.以及_)
+              .form-group
+                label.control-label.col-sm-3.col-xs-12
+                  | Password再一次
+                  span.required *
+                .col-sm-6.col-xs-12
+                  input.form-control.col-md-7.col-xs-12(type="password" v-model.trim="upwd2" @keyup.enter="onSubmit")
+                  small
+                    |請再輸入一次相同的密碼
+              .form-group
+                label.control-label.col-sm-3.col-xs-12
+                  | 自動產生密碼
+                .col-sm-6.col-xs-12
+                  .row
+                    .col-xs-12
+                      .form-inline
+                        button.btn.btn-info(type="button" @click="autopwd") 產生密碼並貼到密碼欄
+                        .input-group
+                          input.form-control#apwd(type="text" readonly v-bind:value="apwd")
+                          .input-group-addon.cppwd(data-clipboard-target="#apwd" data-toggle="tooltip" data-placement="top" title="複製密碼")
+                            i.fa.fa-clipboard
+                    .col-xs-12
+                      small
+                        |你也可以使用系統自動產生的密碼
               .form-group
                 label.control-label.col-sm-3.col-xs-12
                   | 權限
@@ -36,17 +67,17 @@
                     | 一般使用者
                   div
                     small
-                      |【管理者】擁有最高權限，【一般使用者】只能增加Repository與設定協作者
+                      |【管理者】擁有最高權限，【一般使用者】只能觀看列表，無法修改檔案(除了自己的密碼以外)
               .form-group
                 label.control-label.col-sm-3.col-xs-12
                   | 帳號狀態
                   span.required *
                 .col-sm-6.col-xs-12
                   label.radio-inline
-                    input(type="radio" value="1" name="act" checked v-model.trim="active" v-bind:disabled="me.role!=='admin'?true:false")
+                    input(type="radio" value="active" name="act" checked v-model.trim="active" v-bind:disabled="me.role!=='admin'?true:false")
                     | 正常
                   label.radio-inline
-                    input(type="radio" value="0" name="act" v-model.trim="active" v-bind:disabled="me.role!=='admin'?true:false")
+                    input(type="radio" value="stop" name="act" v-model.trim="active" v-bind:disabled="me.role!=='admin'?true:false")
                     | 停用
                   div
                     small
@@ -62,16 +93,29 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      login: '',
-      email: '',
+      uname: '',
+      upwd: '',
+      upwd2: '',
       role: 'user',
-      active: 1,
+      active: 'active',
+      useauto: false,
+      apwd: '',
+      clipboard: '',
     };
   },
   watch: {
+    useauto(val) {
+      if (val) {
+        this.upwd = this.autopwd;
+        this.upwd2 = this.autopwd;
+      } else {
+        this.upwd = '';
+        this.upwd2 = '';
+      }
+    },
   },
   computed: {
-    ...mapGetters(['me', 'userlist']),
+    ...mapGetters(['me']),
     title() {
       if (this.$route.params.type === 'add') {
         return '新增使用者';
@@ -84,7 +128,23 @@ export default {
   },
   methods: {
     ...mapMutations(['setCoverloading']),
-    ...mapActions(['adduser', 'updateuser', 'logout']),
+    ...mapActions(['getuserinfo', 'adduser', 'updateuser', 'logout']),
+    autopwd() {
+      let allowstr = '';
+      for (let i = 0; i < 26; i++) {
+        allowstr += String.fromCharCode(97 + i);
+        allowstr += String.fromCharCode(65 + i);
+      }
+      allowstr += '._@-0123456789';
+      let newpwd = '';
+      while (newpwd.length < 8) {
+        const ra = Math.floor(Math.random() * allowstr.length);
+        newpwd += allowstr.substr(ra, 1);
+      }
+      this.apwd = newpwd;
+      this.upwd = newpwd;
+      this.upwd2 = newpwd;
+    },
     onCancel() {
       this.$router.push('/users');
     },
@@ -96,11 +156,19 @@ export default {
       } else {
         data.id = this.$route.params.type;
       }
-      // if (this.uname.length < 5 || this.uname.length > 50) {
-      //   return swal('Oops...', '使用者帳號需為5-50個英文與數字的組合', 'error');
-      // }
-      data.login = this.login;
-      data.email = this.email;
+      if (this.uname.length < 5 || this.uname.length > 50) {
+        return swal('Oops...', '使用者帳號需為5-50個英文與數字的組合', 'error');
+      }
+      if (method === 'adduser' || this.upwd !== '') {
+        if (this.upwd.length < 5 || this.upwd.length > 20) {
+          return swal('Oops...', '使用者密碼需為5-20個英文與數字的組合', 'error');
+        }
+        if (this.upwd !== this.upwd2) {
+          return swal('Oops...', '兩次輸入的密碼不一樣ㄟ', 'error');
+        }
+        data.upwd = this.upwd;
+      }
+      data.uname = this.uname;
       data.role = this.role;
       data.active = this.active;
       swal({
@@ -123,24 +191,25 @@ export default {
   created() {
     setTimeout(() => {
       if (this.$route.params.type !== 'add') {
-        const id = this.$route.params.type;
-        for (let i = 0; i < this.userlist.length; i++) {
-          if (this.userlist[i]._id === id) {
-            this.login = this.userlist[i].login;
-            this.email = this.userlist[i].email;
-            this.role = this.userlist[i].role;
-            this.active = this.userlist[i].active;
+        this.setCoverloading(true);
+        this.getuserinfo(this.$route.params.type).then((d) => {
+          this.setCoverloading(false);
+          if (d.status === 'OK') {
+            this.uname = d.data.username;
+            this.role = d.data.role;
+            this.active = d.data.active;
+          } else {
+            swal('Oops', d.err.message, 'error');
           }
-        }
-        if (this.email === '') {
-          swal('Oops', '沒有這筆資料喔', 'error');
-          this.$router.replace('/users');
-        }
+        });
       }
       $(this.$el).find('input').eq(0).focus();
+      this.clipboard = new Clipboard('.cppwd');
+      $(this.$el).find('[data-toggle="tooltip"]').tooltip({ container: 'body' });
     }, 30);
   },
   beforeDestroy() {
+    this.clipboard.destroy();
   },
 };
 </script>
