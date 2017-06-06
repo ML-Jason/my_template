@@ -2,6 +2,7 @@ const codes = [
   // E001xxx
   // app存取api授權
   { code: 'E001001', message: '沒有權限' },
+  { code: 'E001002', message: '超過存取次數限制' },
 
   // E002xxx
   // 帳號相關

@@ -26,13 +26,16 @@ app.set('view engine', 'pug');
 app.set('views', '../server/public/mlmng');
 
 app.get('/mlmng/login', (req, res) => {
-  res.render('./login');
+  res.render('./mlmng/login', { params: { githubclientid: global.config.GITHUB_APP_ID } });
 });
-// app.all('/mlmng', (req, res) => {
-//   res.redirect('/mlmng');
-// });
+app.get('/callback', (req, res) => {
+  res.render('./callback');
+});
+app.all('/mlmng', (req, res) => {
+  res.redirect('/mlmng/repos');
+});
 app.get('/mlmng/*', (req, res) => {
-  res.render('./main');
+  res.render('./mlmng/main');
 });
 
 app.listen(PORT, 'localhost', (err) => {

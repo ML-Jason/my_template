@@ -10,11 +10,11 @@ const config = {
   DB: {
     mlab: {
       pool: 5,
-      uri: 'mongodb://..........',
+      uri: 'mongodb://localhost/template',
     },
   },
 
-  JWT_SECRET: '..........',
+  JWT_SECRET: 'dev',
   GITHUB_SECRET: '..........',
   GITHUB_APP_ID: '..........',
   GITHUB_APP_SECRET: '..........',
