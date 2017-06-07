@@ -1,10 +1,11 @@
-const ratelimit = require('../model/model.js')('temp_ratelimit', 'ratelimit');
+const ratelimit = require('../model/model.js')('ratelimits', 'ratelimit');
 
 class RateLimit {
-  constructor(param = { max: 60, time: 60 }) {
-    this.max = param.max || 60;
-    this.time = param.time || 60;
-    // this.rate = this.rate.bind(this);
+  constructor({ name = 'api', max = 60, time = 60 } = {}) {
+    this.max = max;
+    this.time = time;
+    this.name = name;
+    this.rate = this.rate.bind(this);
   }
 
   rate(req, res, next) {
@@ -12,10 +13,11 @@ class RateLimit {
       req.connection.remoteAddress ||
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
-    ratelimit.findOneAndUpdate({ ip }, { $inc: { hits: 1 } }, { upsert: true, new: true })
+    const name = this.name;
+    ratelimit.findOneAndUpdate({ ip, name }, { $inc: { hits: 1 } }, { upsert: true, new: true, setDefaultsOnInsert: true })
       .lean()
       .exec((err, d) => {
-        let ttl = new Date().getTime() - new Date(d.createdAt).getTime();
+        let ttl = (new Date().getTime()) - (new Date(d.cdate).getTime());
         let hits = d.hits;
         let toomany = false;
         if (ttl <= this.time * 1000) {
@@ -23,12 +25,9 @@ class RateLimit {
             toomany = true;
           }
         }
-        console.log(ttl);
-        console.log(this.time * 1000);
         if (ttl > this.time * 1000) {
           hits = 1;
-          ratelimit.findOneAndUpdate({ ip }, { createdAt: Date.now(), hits }, { new: true }).exec((err2, d2) => {
-            console.log(d2);
+          ratelimit.findOneAndUpdate({ ip }, { cdate: Date.now(), hits }, { new: true }).exec((err2) => {
             console.log(err2);
           });
           ttl = 0;

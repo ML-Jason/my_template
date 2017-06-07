@@ -6,7 +6,7 @@ module.exports = () => {
   const router = express.Router();
   router.use(middles.allowAll);
   router.use(middles.parseToken);
-  const ratelimit = new RateLimit();
+  const ratelimit = new RateLimit({ name: 'api', max: '60', time: '60' });
   router.use(ratelimit.rate);
 
   require('./login.js')(router);
