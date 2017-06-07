@@ -2,7 +2,16 @@ const middles = require('./middles.js');
 
 // 處理HTTP 500
 function http500(err, req, res, next) {
-  return res.status(500).send('HTTP 500...');
+  global.logger.log('error', 'http 500 - ', req.path);
+  if (res.headersSent) {
+    // 如果標頭已經傳送，則委派給Express預設的error handler處理
+    return next(err);
+  }
+  // 如果是開發階段，就顯示所有錯誤
+  if (process.env.NODE_ENV === 'dev') {
+    return res.status(500).send(err);
+  }
+  return res.status(500).send('HTTP 500');
 }
 
 // 處理HTTP 404
@@ -21,7 +30,7 @@ module.exports = (app) => {
     res.send('index');
   });
 
-  app.use(middles.errorHandler);
-  if (process.env.NODE_ENV !== 'dev') app.use(http500);
   app.use(http404);
+  app.use(middles.errorHandler);
+  app.use(http500);
 };

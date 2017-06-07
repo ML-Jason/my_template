@@ -1,5 +1,5 @@
 const cluster = require('cluster');
-const domain = require('domain');
+// const domain = require('domain');
 const model = require('./model/model.js');
 
 module.exports = (server, app) => {
@@ -15,13 +15,14 @@ module.exports = (server, app) => {
     }
   }
 
-  app.use((req, res, next) => {
-    const reqDomain = domain.create();
-    reqDomain.on('error', () => {
-      exitHandler('middleware error');
-    });
-    reqDomain.run(next);
-  });
+  // 官方不建議使用domain，所以不要用
+  // app.use((req, res, next) => {
+  //   const reqDomain = domain.create();
+  //   reqDomain.on('error', () => {
+  //     exitHandler('middleware error');
+  //   });
+  //   reqDomain.run(next);
+  // });
 
   // so the program will not close instantly
   // process.stdin.resume(); // 這一行在Azure會出問題

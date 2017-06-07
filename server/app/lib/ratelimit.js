@@ -4,7 +4,7 @@ class RateLimit {
   constructor(param = { max: 60, time: 60 }) {
     this.max = param.max || 60;
     this.time = param.time || 60;
-    this.rate = this.rate.bind(this);
+    // this.rate = this.rate.bind(this);
   }
 
   rate(req, res, next) {

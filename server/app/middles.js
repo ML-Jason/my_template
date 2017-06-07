@@ -71,19 +71,15 @@ middles.verifyToken = (req, res, next) => {
 // 處理error
 middles.errorHandler = (err, req, res, next) => {
   global.logger.log('error', 'errorHandler');
-  global.logger.log('error', err);
   if (err) {
     if (typeof err === 'string') {
+      global.logger.log('error', err);
       if (err.substr(0, 1) === 'E') {
         res.json({ status: 'ERROR', err: errCodes.get(err) });
       } else {
         res.json({ status: 'ERROR', err: { message: err } });
       }
-    } else {
-      res.json({ status: 'ERROR', err });
-    }
-  } else {
-    next();
+    } else if (err.stack) next(err.stack);
   }
 };
 
