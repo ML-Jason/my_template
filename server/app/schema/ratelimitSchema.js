@@ -4,7 +4,7 @@ const schema = mongoose.Schema({
   name: { type: String, index: true },
   ip: { type: String, index: true },
   hits: { type: Number, default: 1 },
-  cdate: { type: Date, index: true, default: Date.now, expires: 60 * 2 },
+  cdate: { type: Date, default: Date.now, expires: 60 * 60 },
 });
 
 module.exports = schema;
