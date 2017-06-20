@@ -4,7 +4,7 @@ const svgCaptcha = require('svg-captcha');
 const User = require('../model/model.js')('mlmngusers', 'user');
 const Captcha = require('../model/model.js')('captchas', 'captcha');
 const validators = require('../lib/validators.js');
-const middles = require('../middles.js');
+const middles = require('../lib/middles.js');
 
 module.exports = (router) => {
   /**

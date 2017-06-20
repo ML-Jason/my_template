@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const model = require('./server/model/model.js');
-const moment = require('moment');
 
 // 設定環境變數
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
@@ -14,9 +13,6 @@ require(`./server/config/config_${process.env.NODE_ENV}.js`);
 
 const port = global.config.PORT;
 const app = express();
-
-// 設定moment時區
-moment.locale('zh-TW');
 
 // 設定log
 require('./server/log.js')(app);
@@ -38,6 +34,7 @@ app.use(express.static('./server/public'));
 // Connect DB
 model.createConnect();
 
+// 掛載router
 require('./server/app')(app);
 
 // 啟動server

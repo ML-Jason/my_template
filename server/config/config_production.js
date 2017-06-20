@@ -1,7 +1,7 @@
 // 設定會依環境ENV而改變的 變數、sensitive data等等
 const config = {
 
-  PORT: process.env.PORT || 3014,
+  PORT: process.env.PORT || 8080,
 
   // 如果允許CORS的話，允許的origin列在這裡(要有protocol)
   ALLOW_DOMAIN: ['http://localhost:8080'],

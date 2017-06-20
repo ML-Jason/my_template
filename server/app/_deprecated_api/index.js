@@ -1,5 +1,5 @@
 const express = require('express');
-const middles = require('../middles.js');
+const middles = require('../lib/middles.js');
 const RateLimit = require('../lib/ratelimit.js');
 
 module.exports = () => {

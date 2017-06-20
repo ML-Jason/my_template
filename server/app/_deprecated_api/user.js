@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const User = require('../model/model.js')('mlmngusers', 'user');
 // const config = require('../../../config.js');
 const validators = require('../lib/validators.js');
-const middles = require('../middles.js');
+const middles = require('../lib/middles.js');
 
 
 // 如果DB裡沒有帳號的話(一開始 or 不小心被砍)，新增一個admin

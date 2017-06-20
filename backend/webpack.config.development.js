@@ -3,7 +3,7 @@ const baseConfig = require('./webpack.config.js');
 
 const config = Object.create(baseConfig);
 
-config.output.publicPath = 'http://localhost:8080/mlmng/js/';
+config.output.publicPath = 'http://localhost:8088/mlmng/js/';
 
 config.plugins.push(new webpack.HotModuleReplacementPlugin());
 config.plugins.push(new webpack.NoEmitOnErrorsPlugin());

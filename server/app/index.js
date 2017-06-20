@@ -1,4 +1,4 @@
-const middles = require('./middles.js');
+const middles = require('./lib/middles.js');
 
 // 處理HTTP 500
 function http500(err, req, res, next) {
@@ -21,14 +21,14 @@ function http404(req, res) {
 }
 
 module.exports = (app) => {
-  app.use('/api', require('./api')());
-  app.use('/mlmng', require('./mlmng')());
-  app.get('/socket', (req, res) => {
-    res.render('server/public/socket');
-  });
-  app.all('/', (req, res) => {
-    res.send('index');
-  });
+  require('./router/api.js')(app);
+  require('./router/mlmng.js')(app);
+  // app.get('/socket', (req, res) => {
+  //   res.render('server/public/socket');
+  // });
+  // app.all('/', (req, res) => {
+  //   res.send('index');
+  // });
 
   app.use(http404);
   app.use(middles.errorHandler);

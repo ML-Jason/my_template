@@ -77,7 +77,8 @@ function initUtils() {
     // if ($(this).attr('url')) return (CURRENT_URL.indexOf($(this).attr('url')) >= 0);
     return this.href === CURRENT_URL;
   }).parent('li')
-    .addClass('current-page')
+    // .addClass('current-page')
+    .addClass('active')
     .parents('ul')
     .slideDown(() => {
       window.setContentHeight();

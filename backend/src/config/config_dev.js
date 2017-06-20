@@ -1,4 +1,4 @@
 const config = {
-  AjaxUrl: 'http://localhost:3001',
+  AjaxUrl: 'http://localhost:8080',
 };
 module.exports = config;

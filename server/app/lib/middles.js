@@ -1,6 +1,6 @@
-const errCodes = require('./errorCodes.js');
+const errCodes = require('../errorCodes.js');
 const jwt = require('jsonwebtoken');
-const User = require('./model/model.js')('mlmngusers', 'user');
+const User = require('../model/model.js')('mlmngusers', 'user');
 
 const middles = {};
 
