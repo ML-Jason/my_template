@@ -42,11 +42,18 @@
                         button.btn.btn-success.btn-xs(type="button" @click="modUser(item._id)") 修改
                       .btn-group
                         button.btn.btn-warning.btn-xs(type="button" @click="delUser(item._id)") 刪除
+          .inloading(v-if="!listDone")
+            i.fa.fa-circle-o-notch.fa-spin
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
+  data() {
+    return {
+      listDone: false,
+    };
+  },
   computed: {
     ...mapGetters(['userlist', 'me']),
   },
@@ -85,9 +92,8 @@ export default {
   created() {
     setTimeout(() => {
       window.initUtils();
-      this.setCoverloading(true);
       this.getuserlist().then(() => {
-        this.setCoverloading(false);
+        this.listDone = true;
       });
     }, 30);
   },

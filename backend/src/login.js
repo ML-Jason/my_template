@@ -36,9 +36,6 @@ const app = new Vue({
         },
         method: 'POST',
         datatype: 'jsonp',
-        /* headers: {
-          Authorization: 'Basic',
-        },*/
       }).done((d) => {
         if (d.status === 'OK') {
           Cookies.set('t', d.data.token);

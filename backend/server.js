@@ -31,16 +31,13 @@ app.get('/mlmng/login', (req, res) => {
 app.get('/callback', (req, res) => {
   res.render('./callback');
 });
-app.all('/mlmng', (req, res) => {
-  res.redirect('/mlmng/repos');
-});
 app.get('/mlmng/*', (req, res) => {
   res.render('./mlmng/main');
 });
 
 app.listen(PORT, 'localhost', (err) => {
   if (err) {
-    // console.log(err);
+    console.log(err);
   }
-  // console.log(`Listening at http://localhost:${PORT}`);
+  console.log(`Listening at http://localhost:${PORT}`);
 });

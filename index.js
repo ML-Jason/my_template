@@ -28,6 +28,8 @@ app.use(bodyParser.json());
 app.set('view engine', 'pug');
 // 將預設的views目錄設定到root，以方便靈活使用
 app.set('views', './');
+// 關掉view的cache(預設在production時會開啟)
+// app.disable('view cache');
 // 設定public dir
 app.use(express.static('./server/public'));
 

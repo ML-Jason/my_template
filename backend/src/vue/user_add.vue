@@ -1,12 +1,5 @@
 <template lang="pug">
   div
-    //
-      .page-title
-        .title_left
-          h3
-            |{{title}}
-            small {{subtitle}}
-      .clearfix
     .row
       .col-md-12
         .x_panel
@@ -86,6 +79,8 @@
               .col-xs-12.flex-cc
                 button.btn.btn-default(type="button" @click="onCancel") 取消
                 button.btn.btn-success(type="button" @click="onSubmit") 送出
+          .inloading(v-if="!dataDone")
+            i.fa.fa-circle-o-notch.fa-spin
 </template>
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
@@ -101,6 +96,7 @@ export default {
       useauto: false,
       apwd: '',
       clipboard: '',
+      dataDone: true,
     };
   },
   watch: {
@@ -135,7 +131,7 @@ export default {
         allowstr += String.fromCharCode(97 + i);
         allowstr += String.fromCharCode(65 + i);
       }
-      allowstr += '._@-0123456789';
+      allowstr += '._@0123456789';
       let newpwd = '';
       while (newpwd.length < 8) {
         const ra = Math.floor(Math.random() * allowstr.length);
@@ -178,7 +174,9 @@ export default {
         allowOutsideClick: false,
         showConfirmButton: false,
       });
+      this.dataDone = false;
       return this[method](data).then((d) => {
+        this.dataDone = true;
         swal.close();
         if (d.status === 'OK') {
           this.$router.push('/users');
@@ -191,9 +189,8 @@ export default {
   created() {
     setTimeout(() => {
       if (this.$route.params.type !== 'add') {
-        this.setCoverloading(true);
+        this.dataDone = false;
         this.getuserinfo(this.$route.params.type).then((d) => {
-          this.setCoverloading(false);
           if (d.status === 'OK') {
             this.uname = d.data.username;
             this.role = d.data.role;
@@ -201,6 +198,7 @@ export default {
           } else {
             swal('Oops', d.err.message, 'error');
           }
+          this.dataDone = true;
         });
       }
       $(this.$el).find('input').eq(0).focus();

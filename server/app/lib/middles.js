@@ -5,14 +5,14 @@ const User = require('../model/model.js')('mlmngusers', 'user');
 const middles = {};
 
 // 開放來自任何網域的api call
-middles.allowAll = (req, res, next) => {
-  if (process.env.NODE_ENV === 'dev') {
-    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Authorization');
-    res.header('Access-Control-Allow-Origin', '*');
-  }
-  next();
-};
+// middles.allowAll = (req, res, next) => {
+//   if (process.env.NODE_ENV === 'dev') {
+//     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+//     res.header('Access-Control-Allow-Headers', 'Authorization');
+//     res.header('Access-Control-Allow-Origin', '*');
+//   }
+//   next();
+// };
 
 // 解析token
 middles.parseToken = (req, res, next) => {
@@ -79,7 +79,7 @@ middles.errorHandler = (err, req, res, next) => {
       } else {
         res.json({ status: 'ERROR', err: { message: err } });
       }
-    } else if (err.stack) next(err.stack);
+    } else next(err);
   }
 };
 

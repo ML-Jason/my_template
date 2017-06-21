@@ -5,13 +5,25 @@
       a.site_title
         i.fa.fa-github
         span
-          | 米蘭GitHub
+          | 後台
     .nav.toggle
       a.menu_toggle
         i.fa.fa-bars
     .clearfix
     hr
     #sidebar-menu.main_menu_side.hidden-print.main_menu
+      .menu_section
+        h3 檔案上傳
+        ul.nav.side-menu
+          li
+            a(url="/upload")
+              i.fa.fa-code-fork
+              | Upload
+              span.fa.fa-chevron-down
+            ul.nav.child_menu
+              router-link(to="/upload" tag="li")
+                a Upload
+      hr
       .menu_section
         h3 GitHub
         ul.nav.side-menu

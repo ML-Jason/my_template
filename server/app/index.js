@@ -2,7 +2,8 @@ const middles = require('./lib/middles.js');
 
 // 處理HTTP 500
 function http500(err, req, res, next) {
-  global.logger.log('error', 'http 500 - ', req.path);
+  global.logger.log('error', err);
+  global.logger.log('error', 'http 500 - ', req.path, ' - ', new Date().toString());
   if (res.headersSent) {
     // 如果標頭已經傳送，則委派給Express預設的error handler處理
     return next(err);

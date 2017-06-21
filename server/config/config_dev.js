@@ -3,8 +3,8 @@ const config = {
 
   PORT: process.env.PORT || 8080,
 
-  // 如果允許CORS的話，允許的origin列在這裡(要有protocol)
-  ALLOW_DOMAIN: ['http://localhost:8080'],
+  // 如果允許CORS的話，允許的origin列在這裡(要有protocol)，設為true則是開放所有
+  ALLOW_DOMAIN: ['http://localhost:8088'],
 
   // 要啟動的db connection資訊，如果只有一個的話，會用預設的mongoose當connection
   DB: {

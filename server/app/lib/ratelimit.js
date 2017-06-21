@@ -1,7 +1,7 @@
 const ratelimit = require('../model/model.js')('ratelimits', 'ratelimit');
 
 class RateLimit {
-  constructor({ name = 'api', max = 60, time = 60 } = {}) {
+  constructor({ name = 'api', max = 120, time = 60 } = {}) {
     this.max = max;
     this.time = time;
     this.name = name;

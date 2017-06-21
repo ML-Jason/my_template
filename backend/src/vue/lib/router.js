@@ -1,21 +1,25 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import store from './store';
 
 Vue.use(VueRouter);
 const routes = [
+  {
+    path: '/', redirect: '/users',
+  },
   // {
-  //   path: '/', redirect: '/applications',
+  //   path: '/repos',
+  //   component: (resolve) => { require(['../repolist.vue'], resolve); },
+  //   name: 'repolist',
+  // },
+  // {
+  //   path: '/repo/:type',
+  //   component: (resolve) => { require(['../repo_add.vue'], resolve); },
+  //   name: 'repo_add',
   // },
   {
-    path: '/repos',
-    component: (resolve) => { require(['../repolist.vue'], resolve); },
-    name: 'repolist',
-  },
-  {
-    path: '/repo/:type',
-    component: (resolve) => { require(['../repo_add.vue'], resolve); },
-    name: 'repo_add',
+    path: '/upload',
+    component: (resolve) => { require(['../upload.vue'], resolve); },
+    name: 'upload',
   },
   {
     path: '/users',

@@ -5,7 +5,7 @@ const codes = [
   { code: 'E001002', message: '超過存取次數限制' },
 
   // E002xxx
-  // 帳號相關
+  // 後台帳號相關
   { code: 'E002001', message: '帳號必需要是5-50個字母的長度' },
   { code: 'E002002', message: '密碼必需要是5-20個字母的長度' },
   { code: 'E002003', message: '錯誤的帳號密碼' },
@@ -19,8 +19,8 @@ const codes = [
 
   // E003xxx
   // token相關
-  { code: 'E003001', message: 'invalid token' },
-  { code: 'E003002', message: 'token expired' },
+  { code: 'E003001', message: '錯誤的token' },
+  { code: 'E003002', message: 'token過期' },
 
   // E004xxx
   // 一般通用
@@ -29,15 +29,15 @@ const codes = [
   { code: 'E004003', message: '沒有這筆資料' },
 
   // E005xxx
-  // application相關
-  { code: 'E005001', message: 'Application的名稱為必填欄位，長度最多100字元' },
-  { code: 'E005002', message: '相同的名稱已經被使用過了' },
-  { code: 'E005003', message: '已經抽過獎了' },
-  { code: 'E005004', message: '沒有資料' },
-  { code: 'E005005', message: '上線時間不能比下線時間晚' },
+  // application相關，目前保留
+  // { code: 'E005001', message: 'Application的名稱為必填欄位，長度最多100字元' },
+  // { code: 'E005002', message: '相同的名稱已經被使用過了' },
+  // { code: 'E005003', message: '已經抽過獎了' },
+  // { code: 'E005004', message: '沒有資料' },
+  // { code: 'E005005', message: '上線時間不能比下線時間晚' },
 
   // E006xxx
-  // 活動表單相關
+  // 表單驗證相關
   { code: 'E006001', message: '錯誤的發票號碼' },
   { code: 'E006002', message: '請輸入姓名' },
   { code: 'E006003', message: '錯誤的Email' },
@@ -47,6 +47,7 @@ const codes = [
   { code: 'E006007', message: '錯誤的AppKey' },
   { code: 'E006008', message: '活動還沒開始' },
   { code: 'E006009', message: '活動已經截止' },
+  { code: 'E006010', message: '上傳的圖片格式錯誤' },
 ];
 
 module.exports = {
