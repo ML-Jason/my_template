@@ -23,13 +23,16 @@ function http404(req, res) {
 
 module.exports = (app) => {
   require('./router/api.js')(app);
+  require('./router/mlmng_api.js')(app);
   require('./router/mlmng.js')(app);
   // app.get('/socket', (req, res) => {
   //   res.render('server/public/socket');
   // });
-  // app.all('/', (req, res) => {
-  //   res.send('index');
-  // });
+
+  // 根目錄不管怎樣都要有，否則Goolge LoadBalancer那邊會有點麻煩
+  app.all('/', (req, res) => {
+    res.send(' ');
+  });
 
   app.use(http404);
   app.use(middles.errorHandler);

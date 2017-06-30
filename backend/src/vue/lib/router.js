@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store';
 
 Vue.use(VueRouter);
 const routes = [
@@ -41,21 +42,26 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   window.closeMenu();
-  // store.dispatch('verifylogin', Cookies.get('t')).then((d) => {
-  //   if (d.token === '') {
-  //     return next(false);
-  //   }
-  //   if ((d.exp * 1000) - Date.now() <= 60 * 10 * 1000) {
-  //     store.dispatch('updatetoken', Cookies.get('t')).then((d2) => {
-  //       if (d2.token === '') {
-  //         return next(false);
-  //       }
-  //       return Cookies.set('t', d2.token);
-  //     });
-  //   }
-  //   return next();
-  // });
-  next();
+
+  // 確認是否有登入
+  store.dispatch('verifylogin', Cookies.get('t')).then((d) => {
+    // 如果沒登入，導向
+    if (d.token === '') {
+      window.location.href = '/mlmng/login';
+      return next(false);
+    }
+    // 判斷token的時效，低於一小時就自動更新token
+    if ((d.exp * 1000) - Date.now() <= 60 * 10 * 1000) {
+      return store.dispatch('updatetoken', Cookies.get('t')).then((d2) => {
+        if (d2.token === '') {
+          window.location.href = '/mlmng/login';
+          return next(false);
+        }
+        return Cookies.set('t', d2.token);
+      });
+    }
+    return next();
+  });
 });
 
 module.exports = router;

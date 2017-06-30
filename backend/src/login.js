@@ -14,6 +14,7 @@ const app = new Vue({
   },
   methods: {
     submit() {
+      if (swal.isVisible() !== 0) return false;
       if (this.uname === '' || this.upwd === '') {
         return swal('Oops...', '請輸入登入帳號及密碼', 'error');
       }
@@ -28,7 +29,7 @@ const app = new Vue({
         showConfirmButton: false,
       });
       return $.ajax({
-        url: `${config.AjaxUrl}/api/login`,
+        url: `${config.AjaxUrl}/mlmng/api/login`,
         data: {
           uname: this.uname,
           upwd: this.upwd,
@@ -54,7 +55,7 @@ const app = new Vue({
       });
     },
     reloadCodeImg() {
-      const imgurl = `${config.AjaxUrl}/api/captcha?size=150x40&num=4&color=0`;
+      const imgurl = `${config.AjaxUrl}/mlmng/api/captcha?size=150x40&num=4&color=0`;
       const codekey = `rand${Math.floor(Math.random() * 10000)}`;
       this.codeimg = `${imgurl}&key=${codekey}`;
     },

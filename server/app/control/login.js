@@ -60,7 +60,10 @@ fn.login = (req, res, next) => {
   if (codes === '') return next('E002005');
 
   // 看是否有符合key的captcha
-  return Captcha.findOne({ captcha: codes.toLowerCase() }).lean().exec((err, d) => {
+  return Captcha.findOneAndUpdate({
+    captcha: codes.toLowerCase(),
+    used: false,
+  }, { used: true }).lean().exec((err, d) => {
     if (err) return next(err);
     if (!d) return next('E002005');
     Captcha.remove({ _id: d._id }).exec();

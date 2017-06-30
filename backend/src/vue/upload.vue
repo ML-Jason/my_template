@@ -17,10 +17,10 @@ export default {
     };
   },
   watch: {
-    
+
   },
   computed: {
-    
+
   },
   methods: {
     uploadClick() {
@@ -54,7 +54,7 @@ export default {
       if (typeof files === 'string') {
         formdata.append('files', files, 'base64.jpg');
       } else {
-        for (let i =0;i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
           formdata.append('files', files[i]);
         }
       }
@@ -75,33 +75,33 @@ export default {
     },
 
     uploadCanvasClick() {
-      const c = document.getElementById("mycanvas");
+      const c = document.getElementById('mycanvas');
       const jpegUrl = c.toDataURL();
       $.ajax({
         url: 'http://localhost:8080/api/uploadBase64',
         method: 'POST',
         datatype: 'json',
         data: {
-          photo:jpegUrl,
+          photo: jpegUrl,
         },
       }).done((d) => {
         console.log(d);
-      })
+      });
     },
   },
   beforeRouteUpdate(to, from, next) {
-    
+
   },
   created() {
-    setTimeout(()=> {
-      const c = document.getElementById("mycanvas");
+    setTimeout(() => {
+      const c = document.getElementById('mycanvas');
       c.width = 500;
       c.height = 500;
-      const ctx = c.getContext("2d");
-      ctx.fillStyle="#FF0000";
-      ctx.fillRect(0,0,500,500);
-      ctx.fillStyle="#FFFF00";
-      ctx.fillRect(400,300, 100, 200);
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(0, 0, 500, 500);
+      ctx.fillStyle = '#FFFF00';
+      ctx.fillRect(400, 300, 100, 200);
     }, 500);
   },
   beforeDestroy() {

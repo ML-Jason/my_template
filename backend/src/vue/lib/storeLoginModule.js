@@ -14,16 +14,16 @@ const storemodule = {
     },
   },
   mutations: {
-    me(state, param) {
-      state.myinfo = param;
-    },
+    // me(state, param) {
+    //   state.myinfo = param;
+    // },
   },
   actions: {
     verifylogin({ state, rootState }, param) {
       let data = { _id: '', email: '', login: '', role: '' };
       return new Promise((resolve) => {
         $.ajax({
-          url: `${config.AjaxUrl}/api/verifylogin`,
+          url: `${config.AjaxUrl}/mlmng/api/verifylogin`,
           method: 'GET',
           datatype: 'json',
           headers: {
@@ -52,34 +52,34 @@ const storemodule = {
         });
       });
     },
-    // updatetoken({ state, rootState }, param) {
-    //   let data = { token: '' };
-    //   return new Promise((resolve) => {
-    //     $.ajax({
-    //       url: `${config.AjaxUrl}/api/updatetoken`,
-    //       method: 'GET',
-    //       datatype: 'json',
-    //       headers: {
-    //         Authorization: `Bearer ${param}`,
-    //       },
-    //     }).done((d) => {
-    //       if (d.status === 'OK') {
-    //         data = {
-    //           token: d.data.token,
-    //         };
-    //       }
-    //     }).always(() => {
-    //       rootState.user.token = data.token;
-    //       if (data.token === '') {
-    //         state.lState = false;
-    //       }
-    //       resolve(data);
-    //     });
-    //   });
-    // },
+    updatetoken({ state, rootState }, param) {
+      let data = { token: '' };
+      return new Promise((resolve) => {
+        $.ajax({
+          url: `${config.AjaxUrl}/mlmng/api/updatetoken`,
+          method: 'GET',
+          datatype: 'json',
+          headers: {
+            Authorization: `Bearer ${param}`,
+          },
+        }).done((d) => {
+          if (d.status === 'OK') {
+            data = {
+              token: d.data.token,
+            };
+          }
+        }).always(() => {
+          rootState.token = data.token;
+          // if (data.token === '') {
+          //   state.lState = false;
+          // }
+          resolve(data);
+        });
+      });
+    },
     logout({ state, rootState }) {
       $.ajax({
-        url: `${config.AjaxUrl}/api/logout`,
+        url: `${config.AjaxUrl}/mlmng/api/logout`,
         method: 'GET',
         datatype: 'json',
         headers: {

@@ -17,6 +17,8 @@ validator.toStr = (str) => {
   let rs = '';
   if (str === undefined) return '';
   rs = str.toString().trim();
+  rs = validator.sanitize(rs);
+  rs = validator.xssfilter(rs);
   return rs;
 };
 validator.toAlphanumeric = (str,

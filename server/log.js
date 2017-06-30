@@ -22,7 +22,7 @@ module.exports = (app) => {
   // 設定console log依日期寫入檔案
   const transport1 = new winston.transports.DailyRotateFile({
     filename: './server/log/-console.log',
-    datePattern: 'dd-MM-yyyy',
+    datePattern: 'yyyy-MM-dd',
     prepend: true,
     localTime: true,
   });

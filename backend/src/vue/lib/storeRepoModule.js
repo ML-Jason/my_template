@@ -12,7 +12,7 @@ const storemodule = {
       return new Promise((resolve) => {
         let rs = { status: 'ERROR', err: { message: 'unknown' } };
         $.ajax({
-          url: `${config.AjaxUrl}/api/repos`,
+          url: `${config.AjaxUrl}/mlmng/api/repos`,
           method: 'GET',
           datatype: 'json',
           data: {
@@ -34,7 +34,7 @@ const storemodule = {
       return new Promise((resolve) => {
         let rs = { status: 'ERROR', err: { message: 'unknown' } };
         $.ajax({
-          url: `${config.AjaxUrl}/api/repos/${data}`,
+          url: `${config.AjaxUrl}/mlmng/api/repos/${data}`,
           method: 'GET',
           datatype: 'json',
           headers: {
@@ -51,7 +51,7 @@ const storemodule = {
       return new Promise((resolve) => {
         let rs = { status: 'ERROR', err: { message: 'unknown' } };
         $.ajax({
-          url: `${config.AjaxUrl}/api/repos/${data}/collaborators`,
+          url: `${config.AjaxUrl}/mlmng/api/repos/${data}/collaborators`,
           method: 'GET',
           datatype: 'json',
           headers: {
@@ -68,7 +68,7 @@ const storemodule = {
       return new Promise((resolve) => {
         let rs = { status: 'ERROR', err: { message: 'unknown' } };
         $.ajax({
-          url: `${config.AjaxUrl}/api/repos`,
+          url: `${config.AjaxUrl}/mlmng/api/repos`,
           method: 'POST',
           datatype: 'json',
           data,
@@ -86,7 +86,7 @@ const storemodule = {
       return new Promise((resolve) => {
         let rs = { status: 'ERROR', err: { message: 'unknown' } };
         $.ajax({
-          url: `${config.AjaxUrl}/api/repos/${data.oname}`,
+          url: `${config.AjaxUrl}/mlmng/api/repos/${data.oname}`,
           method: 'PUT',
           datatype: 'json',
           data,
@@ -104,7 +104,7 @@ const storemodule = {
       return new Promise((resolve) => {
         let rs = { status: 'ERROR', err: { message: 'unknown' } };
         $.ajax({
-          url: `${config.AjaxUrl}/api/repos/${data.name}`,
+          url: `${config.AjaxUrl}/mlmng/api/repos/${data.name}`,
           method: 'DELETE',
           datatype: 'json',
           headers: {

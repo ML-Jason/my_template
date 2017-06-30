@@ -17,7 +17,7 @@ const userModule = {
         let rs = { status: 'ERROR' };
         if (!rootState.token) return resolve();
         return $.ajax({
-          url: `${config.AjaxUrl}/api/users`,
+          url: `${config.AjaxUrl}/mlmng/api/users`,
           method: 'GET',
           datatype: 'json',
           headers: {
@@ -40,7 +40,7 @@ const userModule = {
         if (!rootState.token) return resolve();
         let rs = { status: 'ERROR' };
         return $.ajax({
-          url: `${config.AjaxUrl}/api/user`,
+          url: `${config.AjaxUrl}/mlmng/api/user`,
           method: 'POST',
           datatype: 'json',
           data: param,
@@ -59,7 +59,7 @@ const userModule = {
         if (!rootState.token) return resolve();
         let rs = { status: 'ERROR' };
         return $.ajax({
-          url: `${config.AjaxUrl}/api/user/${param.id}`,
+          url: `${config.AjaxUrl}/mlmng/api/user/${param.id}`,
           method: 'PUT',
           datatype: 'json',
           data: param,
@@ -78,7 +78,7 @@ const userModule = {
         if (!rootState.token) return resolve();
         let rs = { status: 'ERROR' };
         return $.ajax({
-          url: `${config.AjaxUrl}/api/user/${param}`,
+          url: `${config.AjaxUrl}/mlmng/api/user/${param}`,
           method: 'DELETE',
           datatype: 'json',
           headers: {
@@ -105,7 +105,7 @@ const userModule = {
         if (!rootState.token) return resolve();
         let rs = { status: 'ERROR' };
         return $.ajax({
-          url: `${config.AjaxUrl}/api/user/${param}`,
+          url: `${config.AjaxUrl}/mlmng/api/user/${param}`,
           method: 'GET',
           datatype: 'json',
           headers: {

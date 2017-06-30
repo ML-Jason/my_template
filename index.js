@@ -1,5 +1,4 @@
 const express = require('express');
-// const fs = require('fs');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -22,8 +21,9 @@ app.use(helmet());
 // Cookie的middleware，設定signed cookies的key值(有用到signed cookies才會用到)
 app.use(cookieParser(global.config.jwtsecret));
 // 設定bodyParser
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// 指定上傳的檔案總大小最大50mb (預設是100kb)
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
 // 設定view engine
 app.set('view engine', 'pug');
 // 將預設的views目錄設定到root，以方便靈活使用

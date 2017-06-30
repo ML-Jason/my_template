@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "npmp": "npm install --only=production",
     "git_lf": "git config core.autocrlf false",
-    "p": "pm2 start production.json"
+    "p": "pm2 start production.json",
+    "apidoc": "apidoc -i server/app/control/ -o server/public/mlmng/apidoc -t server/public/mlmng/apidoc_template"
   },
   "author": "",
   "license": "ISC",
