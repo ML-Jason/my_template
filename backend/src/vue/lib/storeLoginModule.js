@@ -14,13 +14,14 @@ const storemodule = {
     },
   },
   mutations: {
-    // me(state, param) {
-    //   state.myinfo = param;
-    // },
+    setloginState(state, param) {
+      state.lState = param;
+    },
   },
   actions: {
     verifylogin({ state, rootState }, param) {
-      let data = { _id: '', email: '', login: '', role: '' };
+      // let data = { _id: '', email: '', login: '', role: '' };
+      let rs = { status: 'ERROR' };
       return new Promise((resolve) => {
         $.ajax({
           url: `${config.AjaxUrl}/mlmng/api/verifylogin`,
@@ -30,25 +31,19 @@ const storemodule = {
             Authorization: `Bearer ${param}`,
           },
         }).done((d) => {
+          rs = d;
           if (d.status === 'OK') {
-            data = {
-              _id: d.data._id,
-              email: d.data.email,
-              login: d.data.login,
-              avatar_url: d.data.avatar_url,
-              role: d.data.role,
-              exp: d.data.exp,
-            };
+            // data = {
+            //   _id: d.data.userid,
+            //   username: d.data.username,
+            //   role: d.data.role,
+            //   exp: d.data.exp,
+            // };
+            state.myinfo = d.data;
             rootState.token = param;
           }
         }).always(() => {
-          state.myinfo = data;
-          if (data._id !== '') {
-            state.lState = true;
-          } else {
-            state.lState = false;
-          }
-          resolve(data);
+          resolve(rs);
         });
       });
     },

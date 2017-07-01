@@ -58,8 +58,8 @@ export default {
     ...mapGetters(['userlist', 'me']),
   },
   methods: {
-    ...mapActions(['getuserlist', 'deluser', 'logout']),
-    ...mapMutations(['setCoverloading']),
+    ...mapActions(['getuserlist', 'deluser', 'confirmTokenError']),
+    ...mapMutations([]),
     modUser(id) {
       this.$router.push(`/user/${id}`);
     },
@@ -72,12 +72,14 @@ export default {
         confirmButtonText: '不要囉嗦',
         cancelButtonText: '對不起我錯了',
       }).then(() => {
-        this.setCoverloading(true);
+        this.listDone = false;
         this.deluser(id).then((d) => {
+          this.listDone = true;
           if (d.status !== 'OK') {
-            swal('Oops', d.err.message, 'error');
+            this.confirmTokenError(d).then((c) => {
+              if (!c) swal('Oops', d.err.message, 'error');
+            });
           }
-          this.setCoverloading(false);
         });
       }, () => {});
     },

@@ -13,14 +13,16 @@
     hr
     #sidebar-menu.main_menu_side.hidden-print.main_menu
       .menu_section
-        h3 檔案上傳
+        h3 常用功能
         ul.nav.side-menu
           li
-            a(url="/upload")
+            a(url="/f")
               i.fa.fa-code-fork
-              | Upload
+              | 常用功能
               span.fa.fa-chevron-down
             ul.nav.child_menu
+              router-link(to="/form" tag="li")
+                a 日期區間表格
               router-link(to="/upload" tag="li")
                 a Upload
       hr

@@ -18,6 +18,11 @@ const routes = [
   //   name: 'repo_add',
   // },
   {
+    path: '/form',
+    component: (resolve) => { require(['../form.vue'], resolve); },
+    name: 'form',
+  },
+  {
     path: '/upload',
     component: (resolve) => { require(['../upload.vue'], resolve); },
     name: 'upload',
@@ -40,28 +45,41 @@ const router = new VueRouter({
   base: '/mlmng',
 });
 
-router.beforeEach((to, from, next) => {
-  window.closeMenu();
+let verifyTimer = 0;
 
+const doVerifyLogin = (next) => {
+  clearTimeout(verifyTimer);
   // 確認是否有登入
   store.dispatch('verifylogin', Cookies.get('t')).then((d) => {
-    // 如果沒登入，導向
-    if (d.token === '') {
-      window.location.href = '/mlmng/login';
-      return next(false);
+    // 如果沒登入，阻止導向
+    if (d.status !== 'OK') {
+      store.dispatch('confirmTokenError', d);
+      if (next) return next(false);
+      return false;
     }
+
+    // 每五分鐘自動跟Server確定一次登入狀態
+    verifyTimer = setTimeout(doVerifyLogin, 5 * 60 * 1000);
+
     // 判斷token的時效，低於一小時就自動更新token
-    if ((d.exp * 1000) - Date.now() <= 60 * 10 * 1000) {
+    if ((Number(d.data.exp) * 1000) - Date.now() <= 60 * 10 * 1000) {
       return store.dispatch('updatetoken', Cookies.get('t')).then((d2) => {
         if (d2.token === '') {
-          window.location.href = '/mlmng/login';
-          return next(false);
+          store.commit('setloginState', false);
+          if (next) return next(false);
+          return false;
         }
         return Cookies.set('t', d2.token);
       });
     }
-    return next();
+    if (next) return next();
+    return false;
   });
+};
+
+router.beforeEach((to, from, next) => {
+  window.closeMenu();
+  doVerifyLogin(next);
 });
 
 module.exports = router;

@@ -37,7 +37,7 @@ const app = new Vue({
     ...mapGetters(['loginState']),
   },
   methods: {
-    ...mapMutations(['setCoverloading', 'token']),
+    ...mapMutations(['setCoverloading', 'token', 'setloginState']),
     ...mapActions(['verifylogin']),
   },
   store,
@@ -45,10 +45,10 @@ const app = new Vue({
   created() {
     if (Cookies.get('t') !== undefined && Cookies.get('t') !== 'undefined') {
       this.token(Cookies.get('t'));
-      this.verifylogin(Cookies.get('t')).then(() => {
-      });
+      // this.verifylogin(Cookies.get('t')).then(() => {
+      // });
     } else {
-      window.location.href = '/mlmng/login';
+      this.setloginState(false);
     }
   },
   mounted() {

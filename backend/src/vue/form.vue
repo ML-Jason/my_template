@@ -46,7 +46,6 @@ div
               button.btn.btn-default.btn-sm(type="button" @click="doSearch") 搜尋
           .col-sm-6
             button.btn.btn-danger.btn-xs(type="button" tag="button" @click="delSelected") 刪除選取的
-            //- router-link.btn.btn-info.btn-xs(v-bind:to="`/${appkey}/serial/add`" tag="button") 新增一筆
           table.table.table-hover.table-striped
             thead
               tr
@@ -75,8 +74,8 @@ div
                   a(href='' @click.prevent='prevPage') Previous
                 template(v-else)
                   a Previous
-              template(v-for='(item, index, key) in pagenations')
-                li(v-bind:class="page===item ? 'active': ''" v-bind:key="index+'_'+item+'_'+key")
+              template(v-for='(item, index) in pagenations')
+                li(v-bind:class="page===item ? 'active': ''" v-bind:key="index+'_'+item+'_'+Math.floor(Math.random()*100000)")
                   a(href='' @click.prevent='gotoPage(item)') {{item}}
               li(v-bind:class="page>=totalpage ? 'disabled': ''")
                 template(v-if="page<totalpage")
@@ -88,6 +87,7 @@ div
 </template>
 <script>
 import { mapMutations, mapActions } from 'vuex';
+import TimeZone from './lib/timezone';
 
 export default {
   data() {
@@ -99,8 +99,8 @@ export default {
       totalpage: 1,
       q: '',
       pagenations: [],
-      sdate: this.dateformat(new Date()),
-      edate: this.dateformat(moment().add(1, 'month')),
+      sdate: this.querydateformat(new TimeZone()),
+      edate: this.querydateformat(new TimeZone(moment().add(1, 'month'))),
       schecked: [],
       allcheck: '',
     };
@@ -120,30 +120,30 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['setCoverloading']),
-    ...mapActions(['loadForm','delFormData']),
+    ...mapMutations([]),
+    ...mapActions(['loadForm', 'delFormData']),
     fetchData() {
-      this.listDone = false;
-      this.schecked = [];
-      this.allcheck = false;
-      this.loadForm({
-        page: this.page,
-        pagesize: this.pagesize,
-        q: this.q,
-        sdate: this.sdate,
-        edate: this.edate,
-      }).then((d) => {
-        if (d.status === 'OK') {
-          this.totalpage = d.totalpage;
-          this.page = d.page;
-          this.pagesize = d.pagesize;
-          this.list = d.data;
-          this.calPagenation();
-        } else {
-          swal('Oops', d.err.message, 'error');
-        }
-        this.listDone = true;
-      });
+      // this.listDone = false;
+      // this.schecked = [];
+      // this.allcheck = false;
+      // this.loadForm({
+      //   page: this.page,
+      //   pagesize: this.pagesize,
+      //   q: this.q,
+      //   sdate: this.sdate,
+      //   edate: this.edate,
+      // }).then((d) => {
+      //   if (d.status === 'OK') {
+      //     this.totalpage = d.totalpage;
+      //     this.page = d.page;
+      //     this.pagesize = d.pagesize;
+      //     this.list = d.data;
+      //     this.calPagenation();
+      //   } else {
+      //     swal('Oops', d.err.message, 'error');
+      //   }
+      //   this.listDone = true;
+      // });
     },
     delSelected() {
       if (this.schecked.length === 0) {
@@ -170,6 +170,8 @@ export default {
       }
     },
     dateChange() {
+      console.log(new TimeZone(this.sdate));
+      console.log(new TimeZone(this.edate));
       this.resetUrl();
     },
     doSearch() {
@@ -202,8 +204,8 @@ export default {
         this.pagenations.push(i);
       }
     },
-    dateformat(d) {
-      return moment(d).format('YYYY/MM/DD');
+    querydateformat(d) {
+      return moment(d).format('YYYY-MM-DD');
     },
     dateformat2(d) {
       return moment(d).format('YYYY/MM/DD HH:mm:ss');
@@ -212,27 +214,30 @@ export default {
       $('#startdate').daterangepicker({
         singleDatePicker: true,
         locale: {
-          format: 'YYYY/MM/DD',
+          format: 'YYYY-MM-DD',
         },
       }, (s) => {
-        this.sdate = this.dateformat(s);
+        this.sdate = this.querydateformat(s);
       });
       $('#enddate').daterangepicker({
         singleDatePicker: true,
         locale: {
-          format: 'YYYY/MM/DD',
+          format: 'YYYY-MM-DD',
         },
       }, (s) => {
-        this.edate = this.dateformat(s);
+        this.edate = this.querydateformat(s);
       });
     },
     getQuery(route) {
+      // const offset = new Date().getTimezoneOffset();
+      // console.log(offset);
+      // console.log(new Date(2017, 6, 1, 0, -480));
       const r = route || this.$route;
       this.page = r.query.page || 1;
       this.pagesize = r.query.pagesize || 50;
       this.q = r.query.q || '';
-      let sd = this.dateformat(new Date(r.query.s));
-      let ed = this.dateformat(new Date(r.query.e));
+      let sd = this.querydateformat(new TimeZone(r.query.s).getTime());
+      let ed = this.querydateformat(new TimeZone(r.query.e).getTime());
       if (sd === 'Invalid date') {
         sd = this.sdate;
       }
@@ -246,7 +251,7 @@ export default {
   },
   created() {
     this.getQuery();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.initUI();
     }, 300);
   },

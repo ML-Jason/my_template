@@ -123,8 +123,8 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['setCoverloading']),
-    ...mapActions(['getuserinfo', 'adduser', 'updateuser', 'logout']),
+    ...mapMutations([]),
+    ...mapActions(['getuserinfo', 'adduser', 'updateuser', 'confirmTokenError']),
     autopwd() {
       let allowstr = '';
       for (let i = 0; i < 26; i++) {
@@ -142,7 +142,8 @@ export default {
       this.upwd2 = newpwd;
     },
     onCancel() {
-      this.$router.push('/users');
+      // this.$router.push('/users');
+      this.$router.go(-1);
     },
     onSubmit() {
       const data = {};
@@ -181,7 +182,9 @@ export default {
         if (d.status === 'OK') {
           this.$router.push('/users');
         } else {
-          swal('Oops', d.err.message, 'error');
+          this.confirmTokenError(d).then((c) => {
+            if (!c) swal('Oops', d.err.message, 'error');
+          });
         }
       });
     },
@@ -196,7 +199,9 @@ export default {
             this.role = d.data.role;
             this.active = d.data.active;
           } else {
-            swal('Oops', d.err.message, 'error');
+            this.confirmTokenError(d).then((c) => {
+              if (!c) swal('Oops', d.err.message, 'error');
+            });
           }
           this.dataDone = true;
         });

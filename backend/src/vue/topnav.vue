@@ -10,8 +10,8 @@
       ul.nav.navbar-nav.navbar-right
         li
           a.user-profile.dropdown-toggle(href="javascript:;" data-toggle="dropdown" aria-expanded="false")
-            // i.fa.fa-user-o 
-            img(v-bind:src="me.avatar_url")
+            i.fa.fa-user-o 
+            // img(v-bind:src="me.avatar_url")
             span 帳號 
             span.fa.fa-angle-down
           ul.dropdown-menu.pull-right
