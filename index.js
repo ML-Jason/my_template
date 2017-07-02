@@ -16,6 +16,8 @@ const app = express();
 // 設定log
 require('./server/log.js')(app);
 
+// 如果配合nginx，就需要設定trust proxy，否則所有來源ip都會是127.0.0.1
+app.set('trust proxy', 'loopback');
 // 對於express進行基本的安全性保護
 app.use(helmet());
 // Cookie的middleware，設定signed cookies的key值(有用到signed cookies才會用到)
