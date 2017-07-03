@@ -33,8 +33,10 @@ const jsfiles = [
   'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
   // sweetalert2
   'https://cdn.jsdelivr.net/sweetalert2/6.3.1/sweetalert2.min.js',
-  // memont.js
+  // moment.js
   'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js',
+  // moment-timezone-width-data
+  'https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.min.js',
   // Bootstrap daterangepicker
   'https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js',
   // Clipboard

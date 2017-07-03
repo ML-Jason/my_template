@@ -34,6 +34,7 @@ const store = new Vuex.Store({
           if (rs.err.code === 'E003001' || rs.err.code === 'E003002') {
             swal('帳號已被登出', '可能是太久沒動作，或是有其他裝置登入這個帳號。<br>點擊後回到登入畫面。', 'warning')
               .then(() => {
+                // 改變loginState，會自動導回登入頁
                 commit('setloginState', false);
               });
             return resolve(true);

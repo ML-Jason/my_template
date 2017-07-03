@@ -182,6 +182,8 @@ export default {
         if (d.status === 'OK') {
           this.$router.push('/users');
         } else {
+          // 確認是否是登入狀態改變，否的話就顯示錯誤訊息
+          // 是的話，confirmTokenError會自動導向到登入頁
           this.confirmTokenError(d).then((c) => {
             if (!c) swal('Oops', d.err.message, 'error');
           });
@@ -199,6 +201,8 @@ export default {
             this.role = d.data.role;
             this.active = d.data.active;
           } else {
+            // 確認是否是登入狀態改變，否的話就顯示錯誤訊息
+            // 是的話，confirmTokenError會自動導向到登入頁
             this.confirmTokenError(d).then((c) => {
               if (!c) swal('Oops', d.err.message, 'error');
             });

@@ -1,5 +1,6 @@
-const momenttimezone = require('moment-timezone');
+// const momenttimezone = require('moment-timezone');
 // const moment = require('moment');
+const momenttimezone = window.moment;
 
 class TimeZone {
   constructor(dateobj, timezone = 'Asia/Taipei') {
@@ -7,7 +8,6 @@ class TimeZone {
     try {
       this.timeformat = momenttimezone.tz(dateobj, this.tz).format();
     } catch (e) {
-      console.log(e);
       this.timeformat = momenttimezone.tz(new Date(), this.tz).format();
     }
   }
@@ -50,6 +50,9 @@ class TimeZone {
   toUTC() {
     const d = new Date(this.timeformat).toISOString();
     return new Date(d);
+  }
+  toDate() {
+    return new Date(this.timeformat);
   }
   format(fmstr) {
     return moment(this.timeformat).format(fmstr);

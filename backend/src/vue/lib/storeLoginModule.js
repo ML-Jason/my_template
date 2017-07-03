@@ -26,7 +26,7 @@ const storemodule = {
         $.ajax({
           url: `${config.AjaxUrl}/mlmng/api/verifylogin`,
           method: 'GET',
-          datatype: 'json',
+          datatype: 'jsonp',
           headers: {
             Authorization: `Bearer ${param}`,
           },

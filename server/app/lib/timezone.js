@@ -51,6 +51,9 @@ class TimeZone {
     const d = new Date(this.timeformat).toISOString();
     return new Date(d);
   }
+  toDate() {
+    return new Date(this.timeformat);
+  }
   format(fmstr) {
     return moment(this.timeformat).format(fmstr);
   }

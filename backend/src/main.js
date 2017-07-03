@@ -43,13 +43,6 @@ const app = new Vue({
   store,
   router,
   created() {
-    if (Cookies.get('t') !== undefined && Cookies.get('t') !== 'undefined') {
-      this.token(Cookies.get('t'));
-      // this.verifylogin(Cookies.get('t')).then(() => {
-      // });
-    } else {
-      this.setloginState(false);
-    }
   },
   mounted() {
     setTimeout(() => {

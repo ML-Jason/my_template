@@ -12,9 +12,16 @@ const uploadMode1 = () => {
     },
     // 改名
     filename: (req, file, cb) => {
-      console.log(file);
-      const ext = file.originalname.split('.')[file.originalname.split('.').length - 1];
-      cb(null, `${utils.newID()}.${ext}`);
+      // console.log(file);
+      let ext = '';
+      // 取得原本檔案的副檔名
+      if (file.originalname.indexOf('.') > 0) {
+        ext = `.${file.originalname.split('.')[file.originalname.split('.').length - 1]}`;
+      }
+      // 如果是圖檔，自己指定副檔名
+      if (file.mimetype === 'image/jpeg') ext = '.jpg';
+      if (file.mimetype === 'image/png') ext = '.png';
+      cb(null, `${utils.newID()}${ext}`);
     },
   });
   const mu = multer({
@@ -39,9 +46,16 @@ fn.upload = (req, res, next) => {
       return next(err);
     }
     // console.log(req.files);
+    const f = [];
+    if (req.files) {
+      for (let i = 0; i < req.files.length; i++) {
+        f.push(`/uploads/temp/${req.files[i].filename}`);
+      }
+    }
+    // 其它參數仍然可以用req.body取得
     // console.log(req.body.test);
     return res.json({
-      status: 'OK',
+      status: 'OK', data: { files: f },
     });
   });
 };

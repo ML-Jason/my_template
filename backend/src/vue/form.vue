@@ -99,8 +99,8 @@ export default {
       totalpage: 1,
       q: '',
       pagenations: [],
-      sdate: this.querydateformat(new TimeZone()),
-      edate: this.querydateformat(new TimeZone(moment().add(1, 'month'))),
+      sdate: this.querydateformat(new TimeZone().toDate()),
+      edate: this.querydateformat(new TimeZone(moment().add(1, 'month')).toDate()),
       schecked: [],
       allcheck: '',
     };
@@ -170,8 +170,8 @@ export default {
       }
     },
     dateChange() {
-      console.log(new TimeZone(this.sdate));
-      console.log(new TimeZone(this.edate));
+      // console.log(new TimeZone(this.sdate));
+      // console.log(new TimeZone(this.edate));
       this.resetUrl();
     },
     doSearch() {
@@ -229,23 +229,20 @@ export default {
       });
     },
     getQuery(route) {
-      // const offset = new Date().getTimezoneOffset();
-      // console.log(offset);
-      // console.log(new Date(2017, 6, 1, 0, -480));
       const r = route || this.$route;
       this.page = r.query.page || 1;
       this.pagesize = r.query.pagesize || 50;
       this.q = r.query.q || '';
-      let sd = this.querydateformat(new TimeZone(r.query.s).getTime());
-      let ed = this.querydateformat(new TimeZone(r.query.e).getTime());
-      if (sd === 'Invalid date') {
+      let sd = new Date(r.query.s);
+      let ed = new Date(r.query.e);
+      if (sd.toString() === 'Invalid Date') {
         sd = this.sdate;
       }
-      if (ed === 'Invalid date') {
+      if (ed.toString() === 'Invalid Date') {
         ed = this.edate;
       }
-      this.sdate = sd;
-      this.edate = ed;
+      this.sdate = this.querydateformat(new TimeZone(sd).toDate());
+      this.edate = this.querydateformat(new TimeZone(ed).toDate());
       this.fetchData();
     },
   },

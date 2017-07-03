@@ -77,7 +77,9 @@ function initUtils() {
   $SIDEBAR_MENU.find('a').filter(function () {
     // if ($(this).attr('url')) return (CURRENT_URL.indexOf($(this).attr('url')) >= 0);
     return this.href === CURRENT_URL;
-  }).parent('li').addClass('current-page').parents('ul').slideDown(function () {
+  }).parent('li')
+  // .addClass('current-page')
+  .addClass('active').parents('ul').slideDown(function () {
     window.setContentHeight();
   }).parent().addClass('active');
 

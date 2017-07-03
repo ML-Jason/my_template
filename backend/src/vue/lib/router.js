@@ -46,40 +46,61 @@ const router = new VueRouter({
 });
 
 let verifyTimer = 0;
+let firsttime = true;
 
 const doVerifyLogin = (next) => {
-  clearTimeout(verifyTimer);
   // 確認是否有登入
-  store.dispatch('verifylogin', Cookies.get('t')).then((d) => {
-    // 如果沒登入，阻止導向
-    if (d.status !== 'OK') {
-      store.dispatch('confirmTokenError', d);
-      if (next) return next(false);
+  if (Cookies.get('t') !== undefined && Cookies.get('t') !== 'undefined') {
+    store.commit('token', Cookies.get('t'));
+    store.dispatch('verifylogin', Cookies.get('t')).then((d) => {
+      // 如果沒登入，阻止導向
+      if (d.status !== 'OK') {
+        store.dispatch('confirmTokenError', d);
+        if (next) return next(false);
+        return false;
+      }
+
+      // 判斷token的時效，低於一小時就自動更新token
+      if ((Number(d.data.exp) * 1000) - Date.now() <= 60 * 10 * 1000) {
+        return store.dispatch('updatetoken', Cookies.get('t')).then((d2) => {
+          if (d2.token === '') {
+            store.commit('setloginState', false);
+            if (next) return next(false);
+            return false;
+          }
+          return Cookies.set('t', d2.token);
+        });
+      }
+      if (next) return next();
       return false;
-    }
-
-    // 每五分鐘自動跟Server確定一次登入狀態
-    verifyTimer = setTimeout(doVerifyLogin, 5 * 60 * 1000);
-
-    // 判斷token的時效，低於一小時就自動更新token
-    if ((Number(d.data.exp) * 1000) - Date.now() <= 60 * 10 * 1000) {
-      return store.dispatch('updatetoken', Cookies.get('t')).then((d2) => {
-        if (d2.token === '') {
-          store.commit('setloginState', false);
-          if (next) return next(false);
-          return false;
-        }
-        return Cookies.set('t', d2.token);
-      });
-    }
-    if (next) return next();
-    return false;
-  });
+    });
+  } else {
+    store.commit('setloginState', false);
+    if (next) next(false);
+  }
+};
+const startVerifyTimer = () => {
+  clearTimeout(verifyTimer);
+  // 每五分鐘自動跟Server確定一次登入狀態
+  verifyTimer = setTimeout(doVerifyLogin, 5 * 60 * 1000);
 };
 
 router.beforeEach((to, from, next) => {
   window.closeMenu();
-  doVerifyLogin(next);
+  // 每次route改變，就確認一次登入狀態
+  // *現在如果在每個api call都判斷，就不需要在route改變時多送一次request
+  // doVerifyLogin(next);
+
+  // 每次route改變，重新啟動timer
+  startVerifyTimer();
+
+  if (firsttime) {
+    // 載入時先確定一次登入狀態
+    doVerifyLogin(next);
+    firsttime = false;
+  } else {
+    next();
+  }
 });
 
 module.exports = router;
