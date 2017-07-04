@@ -66,7 +66,7 @@ div
                 td {{item.name}}
                 td {{item.email}}
                 td {{item.phone}}
-                td {{dateformat2(item.cdate)}}
+                td {{dateformat(item.cdate)}}
           .col-xs-12.center
             ul.pagination
               li(v-bind:class="page<=1 ? 'disabled': ''")
@@ -87,7 +87,7 @@ div
 </template>
 <script>
 import { mapMutations, mapActions } from 'vuex';
-import TimeZone from './lib/timezone';
+// import TimeZone from './lib/timezone';
 
 export default {
   data() {
@@ -99,8 +99,10 @@ export default {
       totalpage: 1,
       q: '',
       pagenations: [],
-      sdate: this.querydateformat(new TimeZone().toDate()),
-      edate: this.querydateformat(new TimeZone(moment().add(1, 'month')).toDate()),
+      // sdate: this.querydateformat(new TimeZone().toDate()),
+      // edate: this.querydateformat(new TimeZone(moment().add(1, 'month')).toDate()),
+      sdate: this.querydateformat(new Date()),
+      edate: this.querydateformat(moment().add(1, 'month')),
       schecked: [],
       allcheck: '',
     };
@@ -170,8 +172,6 @@ export default {
       }
     },
     dateChange() {
-      // console.log(new TimeZone(this.sdate));
-      // console.log(new TimeZone(this.edate));
       this.resetUrl();
     },
     doSearch() {
@@ -207,7 +207,7 @@ export default {
     querydateformat(d) {
       return moment(d).format('YYYY-MM-DD');
     },
-    dateformat2(d) {
+    dateformat(d) {
       return moment(d).format('YYYY/MM/DD HH:mm:ss');
     },
     initUI() {
@@ -241,8 +241,10 @@ export default {
       if (ed.toString() === 'Invalid Date') {
         ed = this.edate;
       }
-      this.sdate = this.querydateformat(new TimeZone(sd).toDate());
-      this.edate = this.querydateformat(new TimeZone(ed).toDate());
+      // this.sdate = this.querydateformat(new TimeZone(sd).toDate());
+      // this.edate = this.querydateformat(new TimeZone(ed).toDate());
+      this.sdate = this.querydateformat(new Date(sd));
+      this.edate = this.querydateformat(new Date(ed));
       this.fetchData();
     },
   },

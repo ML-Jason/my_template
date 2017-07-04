@@ -48,17 +48,26 @@ const router = new VueRouter({
 let verifyTimer = 0;
 let firsttime = true;
 
-const doVerifyLogin = (next) => {
+const fn = {};
+fn.doVerifyLogin = (next) => {
   // 確認是否有登入
   if (Cookies.get('t') !== undefined && Cookies.get('t') !== 'undefined') {
     store.commit('token', Cookies.get('t'));
     store.dispatch('verifylogin', Cookies.get('t')).then((d) => {
       // 如果沒登入，阻止導向
       if (d.status !== 'OK') {
-        store.dispatch('confirmTokenError', d);
+        store.dispatch('confirmTokenError', d).then((c) => {
+          // 如果不是因為token的錯誤，繼續timer
+          if (!c) {
+            swal('Oops', d.err.message, 'error');
+            fn.startVerifyTimer();
+          }
+        });
         if (next) return next(false);
         return false;
       }
+
+      fn.startVerifyTimer();
 
       // 判斷token的時效，低於一小時就自動更新token
       if ((Number(d.data.exp) * 1000) - Date.now() <= 60 * 10 * 1000) {
@@ -79,24 +88,27 @@ const doVerifyLogin = (next) => {
     if (next) next(false);
   }
 };
-const startVerifyTimer = () => {
+
+fn.startVerifyTimer = () => {
   clearTimeout(verifyTimer);
   // 每五分鐘自動跟Server確定一次登入狀態
-  verifyTimer = setTimeout(doVerifyLogin, 5 * 60 * 1000);
+  verifyTimer = setTimeout(fn.doVerifyLogin, 5 * 60 * 1000);
 };
 
 router.beforeEach((to, from, next) => {
   window.closeMenu();
   // 每次route改變，就確認一次登入狀態
   // *現在如果在每個api call都判斷，就不需要在route改變時多送一次request
-  // doVerifyLogin(next);
+  // fn.doVerifyLogin(next);
 
   // 每次route改變，重新啟動timer
-  startVerifyTimer();
+  fn.startVerifyTimer();
 
   if (firsttime) {
     // 載入時先確定一次登入狀態
-    doVerifyLogin(next);
+    setTimeout(() => {
+      fn.doVerifyLogin(next);
+    }, 100);
     firsttime = false;
   } else {
     next();

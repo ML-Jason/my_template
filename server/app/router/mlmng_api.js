@@ -18,7 +18,7 @@ module.exports = (app) => {
   // 套用CORS
   router.use(cors(corsOption));
 
-  // mlmng/api都需要先parse token
+  // mlmng/api幾乎都需要先parse token
   router.use(middles.parseToken);
 
   // 設定api的ratelimit

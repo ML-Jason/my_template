@@ -8,9 +8,9 @@ const middles = require('../lib/middles.js');
 // 如果DB裡沒有帳號的話(一開始 or 不小心被砍)，新增一個admin
 function checkUserNumber() {
   User.findOne({ role: 'admin', active: 'active' }).exec((err, d) => {
-    if (err) global.logger.log('error', err);
+    // if (err) global.logger.log('error', err);
     if (!d) {
-      global.logger.log('warn', '沒有管理者帳號，新增一個');
+      // global.logger.log('warn', '沒有管理者帳號，新增一個');
       const md5 = crypto.createHash('md5');
       const newuser = new User({
         username: 'admin',
@@ -19,7 +19,7 @@ function checkUserNumber() {
         active: 'active',
       });
       newuser.save((err2) => {
-        if (err2) global.logger.log('error', err2);
+        // if (err2) global.logger.log('error', err2);
       });
     }
   });

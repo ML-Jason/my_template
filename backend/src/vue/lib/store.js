@@ -2,9 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import * as userModule from './storeUserModule';
 import * as loginModule from './storeLoginModule';
-import * as repoModule from './storeRepoModule';
-// import * as receiptModule from './storeReceiptModule';
-// import * as drawModule from './storeDrawModule';
+import * as formModule from './storeFormModule';
 
 Vue.use(Vuex);
 
@@ -47,7 +45,7 @@ const store = new Vuex.Store({
   modules: {
     login: loginModule,
     users: userModule,
-    repo: repoModule,
+    repo: formModule,
     // receipt: receiptModule,
     // draw: drawModule,
   },

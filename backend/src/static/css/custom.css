@@ -78,6 +78,27 @@
 .menu_section > ul {
   margin-top: 10px; }
 
+ul.nav.child_menu li:before {
+  background: #425668;
+  bottom: auto;
+  content: "";
+  height: 8px;
+  left: 23px;
+  margin-top: 15px;
+  position: absolute;
+  right: auto;
+  width: 8px;
+  z-index: 1;
+  border-radius: 50%;
+}
+ul.nav.child_menu li:after {
+  border-left: 1px solid #425668;
+  bottom: 0;
+  content: "";
+  left: 27px;
+  position: absolute;
+  top: 0;
+}
 .profile_pic {
   width: 35%;
   float: left; }

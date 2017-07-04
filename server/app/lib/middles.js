@@ -70,10 +70,10 @@ middles.verifyToken = (req, res, next) => {
 
 // 處理error
 middles.errorHandler = (err, req, res, next) => {
-  global.logger.log('error', 'errorHandler');
+  global.logger.error('errorHandler');
   if (err) {
     if (typeof err === 'string') {
-      global.logger.log('error', err);
+      global.logger.error(err);
       if (err.substr(0, 1) === 'E') {
         res.json({ status: 'ERROR', err: errCodes.get(err) });
       } else {

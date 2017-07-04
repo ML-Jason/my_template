@@ -32,10 +32,11 @@ app.set('view engine', 'pug');
 app.set('views', './');
 // 關掉view的cache(預設在production時會開啟)
 // app.disable('view cache');
+
 // 設定public dir
 app.use(express.static('./server/public'));
 
-// Connect DB
+// 連接DB
 model.createConnect();
 
 // 掛載router
@@ -50,5 +51,5 @@ const server = app.listen(port, '127.0.0.1', () => {
 require('./server/socketio/socket.js')(server);
 
 // 程式發生exception時的例外處理
-require('./server/exceptionHandler.js')(server, app);
+require('./server/exceptionHandler.js')(server);
 

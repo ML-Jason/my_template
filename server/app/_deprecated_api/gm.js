@@ -16,7 +16,7 @@ module.exports = (router) => {
           .drawText(10, 36, '中文TEST!!', 'NorthWest')
           .write('./server/public/image/out.jpg', (err2) => {
             if (err2) {
-              global.logger.log('error', err2);
+              // global.logger.log('error', err2);
             }
             res.send('/image/out.jpg');
           });
@@ -30,7 +30,7 @@ module.exports = (router) => {
       .in('./server/public/image/p*.jpg')
       .write('./server/public/image/out.gif', (err2) => {
         if (err2) {
-          global.logger.log('error', err2);
+          // global.logger.log('error', err2);
         }
         res.send('/image/out.gif');
       });

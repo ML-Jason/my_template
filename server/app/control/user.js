@@ -7,9 +7,9 @@ const fn = {};
 // 如果DB裡沒有帳號的話(一開始 or 不小心被砍)，新增一個admin
 fn.checkUserNumber = () => {
   User.findOne({ role: 'admin', active: 'active' }).exec((err, d) => {
-    if (err) global.logger.log('error', err);
+    if (err) global.logger.error(err);
     if (!d) {
-      global.logger.log('warn', '沒有管理者帳號，新增一個');
+      global.logger.warn('沒有管理者帳號，新增一個');
       const md5 = crypto.createHash('md5');
       const newuser = new User({
         username: 'admin',
@@ -18,7 +18,7 @@ fn.checkUserNumber = () => {
         active: 'active',
       });
       newuser.save((err2) => {
-        if (err2) global.logger.log('error', err2);
+        if (err2) global.logger.error(err2);
       });
     }
   });
